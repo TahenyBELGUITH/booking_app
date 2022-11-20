@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
 
- before_action :set_room, only: %i[show edit]
+ before_action :set_room, only: %i[show edit update destroy]
 
  def index 
   @rooms = Room.all
@@ -25,9 +25,25 @@ class RoomsController < ApplicationController
  end
 
  def edit 
-  
  end
+ 
+ def update
+  respond_to do |format|
+   if @room.update(room_params)
+    format.html { redirect_to room_path(@room), notice: "Room was successfully updated!"}
+   else 
+    format.html { render :new , status: :unprocessable_entity }
+   end
 
+  end
+ end
+ 
+ def destroy
+  @room.destroy 
+  respond_to do |format|
+   format.html { redirect_to rooms_path, notice: "Room was successfully deleted!"}
+  end 
+ end
 
  private 
  def set_room 
